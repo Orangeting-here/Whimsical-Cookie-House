@@ -1,0 +1,78 @@
+============================================================
+THIRD-PARTY NOTICES · 第三方开源组件声明
+Whimsical-Cookie-House
+============================================================
+
+本项目内联 / 内嵌使用了以下开源组件与词典。这些组件遵循各自的原始许可，
+其版权归原作者所有，下列声明不改变、不替换原许可条款。本项目自身代码采用
+MIT 许可证（见 LICENSE），与下列第三方许可相互独立。
+
+------------------------------------------------------------
+1. mammoth.js
+------------------------------------------------------------
+用途：阅读器中解析 .docx 文档并转为 HTML。
+许可：BSD-2-Clause
+版权：Copyright (c) 2013 Michael Williamson
+来源：https://github.com/mwilliamson/mammoth.js
+
+许可全文（BSD-2-Clause）：
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+------------------------------------------------------------
+2. JSZip
+------------------------------------------------------------
+用途：阅读器中读写 .zip 归档（docx 内部为 zip 包）。
+许可：MIT 或 GPL-3.0 双许可（可择一使用）
+版权：Copyright (c) 2009-2016 Stuart Knightley, David Duponchel,
+      Franz Buchinger, António Afonso
+来源：https://github.com/Stuk/jszip
+
+MIT 许可要点：免费使用、修改、分发、商用，唯一要求保留版权与许可声明；
+MIT 与 GPLv3 二选一，详见原项目 LICENSE。
+
+------------------------------------------------------------
+3. pako
+------------------------------------------------------------
+用途：阅读器中做 zlib/deflate 解压。
+许可：MIT（源码其余部分）/ Zlib（/src/zlib 目录），双许可
+版权：Copyright (C) 2014-2017 Vitaly Puzrin, Andrei Tuputcyn
+来源：https://github.com/nodeca/pako
+
+------------------------------------------------------------
+4. jieba 中文分词词典
+------------------------------------------------------------
+用途：词频分析器内嵌的分词词典（压缩 base64 内嵌于单文件 HTML）。
+许可：MIT License
+版权：Copyright (c) 2013 Sun Junyi
+来源：https://github.com/fxsjy/jieba
+
+说明：分词引擎与浏览器端 inflate 解压实现为本项目自写；内嵌的词条
+词典整理自 jieba 开源词典，版权归原项目所有。
+
+------------------------------------------------------------
+待补充（文件尚未上传，上传后核对）
+------------------------------------------------------------
+- 个人档案库：内联使用的 exceljs（MIT, Copyright (c) 2014-2019 Guyon Roche,
+  https://github.com/exceljs/exceljs）与 JSZip（见上），待预览页与安装包
+  上传后按实际打包内容补充核对。
+- MC 模组（taggedlib / springmodule）：依赖链与第三方库许可待进一步核查；
+  模组元数据标注为 MIT。
