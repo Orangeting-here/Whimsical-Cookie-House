@@ -1,8 +1,9 @@
 <!doctype html>
 <!-- ============================================================
-     Whimsical-Cookie-House · 单文件导航页（苹果风 · 两层结构）
-     第一页：应用总览（App Store 式彩色卡片）
-     第二页：点进单个工具的详情与操作
+     Whimsical-Cookie-House · 单文件导航页（三屏门户）
+     第一屏：封面萌罩（暗色，下滑进入）
+     第二屏：榛仁白巧点心盒车架（浅色萌系，开始使用→内嵌壳打开工具箱）
+     第三屏：项目墙（App Store 式彩色卡片 → 详情）
      链接配置只改底部 script 里的 SITE / RAW 与 APPS。
      ============================================================ -->
 <html lang="zh-CN" data-theme="light">
@@ -181,6 +182,9 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
 .tag{font-size:11px;color:var(--text-soft);border:1px solid var(--chip-line);padding:1px 9px;border-radius:999px;white-space:nowrap}
 
 .card-chevron{position:absolute;top:20px;right:20px;color:var(--muted);opacity:0;transition:opacity .25s}
+.card-act{margin-top:12px;display:flex;justify-content:flex-end}
+.card-detail-btn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 16px;border-radius:999px;border:1px solid var(--chip-line);background:var(--chip);color:var(--text-soft);font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.card-detail-btn:hover{background:var(--blue);color:#fff;border-color:transparent}
 .card:hover .card-chevron{opacity:1}
 .card-chevron svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
 
@@ -317,9 +321,79 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
 .app-modal-x:hover{color:var(--blue);border-color:var(--blue)}
 .app-frame{flex:1 1 auto;min-height:0;width:100%;border:0;background:#fff}
 
+/* ---------- 三屏舞台与滚动 ---------- */
+html,body{height:100%}
+body{overflow:hidden}
+#stage{position:relative;height:100vh;height:100dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#stage .screen{min-height:100vh}
+@media (min-width:1024px){
+  #stage{scroll-snap-type:y proximity}
+  #stage .screen{scroll-snap-align:start}
+  .cover{scroll-snap-stop:always}
+}
+
+/* ---------- 第二屏：点心盒车架（浅色萌系 · 白巧） ---------- */
+.showcase{
+  position:relative;min-height:100vh;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:64px 24px 72px;text-align:center;
+  background:#FFFDF7;
+  background-image:
+    radial-gradient(52% 40% at 12% 8%, rgba(246,231,207,.9), transparent 62%),
+    radial-gradient(46% 38% at 90% 12%, rgba(232,207,168,.75), transparent 60%),
+    radial-gradient(50% 42% at 88% 92%, rgba(244,222,196,.8), transparent 62%),
+    radial-gradient(44% 36% at 8% 88%, rgba(238,208,180,.6), transparent 60%);
+}
+.showcase::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(135deg,rgba(138,90,43,.03) 0 2px,transparent 2px 14px)}
+.box-ico{width:96px;height:96px;border-radius:28px;display:grid;place-items:center;font-size:50px;
+  background:linear-gradient(160deg,#FFF6E8,#F3DDB8);box-shadow:inset 0 2px 0 rgba(255,255,255,.9),0 14px 30px rgba(122,86,44,.22)}
+.box-name{margin:18px 0 0;font-size:32px;font-weight:800;letter-spacing:-.01em;color:#4A2E17}
+.box-sub{margin:10px 0 0;font-size:15.5px;line-height:1.8;color:#8A6B4F;max-width:56ch}
+.box-chips{margin:14px 0 0;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.box-chip{font-size:12px;color:#8A6B4F;background:rgba(255,255,255,.72);border:1px solid #EFE0CB;padding:3px 12px;border-radius:999px}
+.cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px;width:100%;max-width:1080px}
+.cat-grid[hidden]{display:none}
+.cat-card{display:flex;flex-direction:column;gap:9px;text-align:left;background:rgba(255,255,255,.8);border:1px solid #F0E2CE;border-radius:18px;padding:16px 16px 15px;box-shadow:0 10px 24px rgba(122,86,44,.12);transition:transform .2s;cursor:pointer}
+.cat-card:hover{transform:translateY(-3px)}
+.cat-top{display:flex;align-items:center;gap:10px}
+.cat-ico{font-size:25px;line-height:1}
+.cat-name{font-weight:700;color:#4A2E17;font-size:15.5px}
+.cat-desc{margin:0;font-size:12.5px;color:#8A6B4F;line-height:1.65}
+.cat-btn{display:inline-flex;align-items:center;gap:6px;margin-top:auto;align-self:flex-start;padding:7px 15px;border-radius:999px;border:1px solid #E3CDAF;background:#FFF9EF;color:#7A4E22;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;transition:background .2s,transform .2s}
+.cat-btn:hover{background:#F6E9D5;transform:translateY(-1px)}
+.cat-detail[hidden]{display:none}
+.cat-detail{display:flex;flex-direction:column;gap:12px;width:100%;max-width:720px;margin-top:24px;text-align:left;max-height:48vh;overflow:auto;padding:2px}
+.cat-back{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 16px;border-radius:999px;border:1px solid #E3CDAF;background:#FFF9EF;color:#7A4E22;font-family:var(--font-sans);font-size:14px;font-weight:600;cursor:pointer}
+.cat-back:hover{background:#F6E9D5}
+.cat-detail-name{margin:0;font-size:21px;font-weight:800;color:#4A2E17}
+.cat-items{display:flex;flex-direction:column;gap:9px}
+.cat-item{display:flex;flex-direction:column;gap:2px;background:rgba(255,255,255,.8);border:1px solid #F0E2CE;border-radius:14px;padding:10px 14px}
+.cat-item b{font-size:13.5px;color:#4A2E17;font-weight:600}
+.cat-item span{font-size:12px;color:#8A6B4F;line-height:1.6}
+.box-cta-wrap[hidden],.box-down[hidden]{display:none}
+.box-cta-wrap{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.box-cta{display:inline-flex;align-items:center;gap:9px;padding:15px 38px;border-radius:999px;cursor:pointer;text-decoration:none;
+  font-family:var(--font-sans);font-size:17.5px;font-weight:700;color:#FFF8EF;
+  background:linear-gradient(180deg,#9C6B38,#7A4E22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 14px 30px rgba(122,86,44,.32);
+  transition:transform .2s,box-shadow .2s}
+.box-cta:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 18px 36px rgba(122,86,44,.4)}
+.box-open{font-size:13px;color:#A5835E;text-decoration:none;border-bottom:1px dashed #C9AF8E}
+.box-open:hover{color:#7A4E22}
+.box-down{margin-top:34px;font-size:13px;color:#A5835E;letter-spacing:.06em;display:flex;flex-direction:column;align-items:center;gap:6px}
+.box-down svg{width:20px;height:20px;stroke:#A5835E;fill:none;stroke-width:2;animation:coverUp 1.8s ease-in-out infinite}
+@media (max-width:1023px){
+  .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  .cat-grid{grid-template-columns:1fr}
+  .box-name{font-size:26px}
+  .showcase{padding:48px 18px 56px}
+}
+
 /* ---------- 启动屏（iOS 锁屏风） ---------- */
 .cover{
-  position:fixed;inset:0;z-index:100;
+  position:relative;min-height:100vh;
   display:flex;flex-direction:column;align-items:center;justify-content:space-between;
   padding:9vh 24px 6vh;
   background:#0A0A12;
@@ -334,7 +408,6 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
   transition:opacity .5s ease, visibility .5s ease, transform .5s ease;
 }
 .cover[hidden]{display:none}
-.cover.leave{opacity:0;visibility:hidden;transform:scale(1.04)}
 .cover-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
 .cover-title{font-size:34px;font-weight:700;letter-spacing:-.01em;line-height:1.15;text-shadow:0 2px 24px rgba(0,0,0,.3);white-space:nowrap}
 .cover-cn{font-size:16px;font-weight:500;letter-spacing:.12em;color:rgba(255,255,255,.72)}
@@ -376,19 +449,93 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
   *{transition-duration:.001s !important}
   .card:hover{transform:none}
 }
+
+/* ============================================================
+   内置内嵌壳（不依赖外部 embed.js，单文件也能嵌）
+   浅色萌系 · 毛玻璃 · 手机全屏 / 桌面居中卡片
+   ============================================================ */
+#boxEmbed{
+  position:fixed;inset:0;z-index:2147483000;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(24,22,30,.42);
+  -webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);
+  opacity:0;visibility:hidden;transition:opacity .26s ease, visibility .26s ease;
+}
+#boxEmbed[hidden]{display:none}
+#boxEmbed.on{opacity:1;visibility:visible}
+#boxEmbed .be-shell{
+  position:relative;display:flex;flex-direction:column;
+  width:min(96vw,1180px);height:min(92vh,880px);
+  background:var(--glass-strong);
+  border:1px solid var(--glass-line);border-radius:26px;
+  box-shadow:0 30px 80px rgba(50,40,60,.28),0 2px 0 rgba(255,255,255,.6) inset;
+  overflow:hidden;
+  transform:translateY(14px) scale(.985);transition:transform .3s cubic-bezier(.22,.9,.24,1);
+}
+#boxEmbed.on .be-shell{transform:none}
+#boxEmbed .be-bar{
+  display:flex;align-items:center;gap:8px;flex-shrink:0;
+  height:52px;padding:0 12px 0 18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(248,246,250,.92));
+  border-bottom:1px solid rgba(120,110,130,.14);
+}
+#boxEmbed .be-dots{display:flex;gap:6px;margin-right:2px}
+#boxEmbed .be-dot{width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+#boxEmbed .be-dot.r{background:#FF6B6B}
+#boxEmbed .be-dot.y{background:#FFD166}
+#boxEmbed .be-dot.g{background:#4CD97B}
+#boxEmbed .be-title{
+  flex:1;min-width:0;font-family:var(--font-sans);font-size:14px;font-weight:650;color:#2A2733;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em;
+}
+#boxEmbed .be-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  height:34px;padding:0 12px;border:1px solid rgba(120,110,130,.16);border-radius:11px;
+  font-family:var(--font-sans);font-size:12.5px;font-weight:600;color:#4A4557;
+  background:rgba(255,255,255,.86);cursor:pointer;transition:.16s;white-space:nowrap;
+}
+#boxEmbed .be-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 3px 10px rgba(90,80,110,.12)}
+#boxEmbed .be-btn.close{width:34px;padding:0;font-size:15px;color:#8A8496}
+#boxEmbed .be-btn.close:hover{background:#FFF0F2;color:#E8546B;border-color:#FFD3DA}
+#boxEmbed iframe{flex:1;width:100%;border:0;background:#F5F3F7;display:block}
+#boxEmbed .be-load{
+  position:absolute;inset:52px 0 0 0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  background:#FBFAFD;color:#6C6678;font-family:var(--font-sans);font-size:13.5px;
+  transition:opacity .3s;
+}
+#boxEmbed .be-load.hide{opacity:0;pointer-events:none}
+#boxEmbed .be-spin{
+  width:26px;height:26px;border-radius:50%;
+  border:2.5px solid rgba(140,130,160,.22);border-top-color:#B98CE0;
+  animation:beSpin .9s linear infinite;
+}
+@keyframes beSpin{to{transform:rotate(360deg)}}
+#boxEmbed .be-slow{font-size:12px;color:#9A94A6;max-width:80%;text-align:center;line-height:1.6}
+@media (max-width:760px){
+  #boxEmbed{align-items:stretch}
+  #boxEmbed .be-shell{width:100vw;height:100vh;height:100dvh;border-radius:0;border:0}
+  #boxEmbed .be-bar{height:48px;padding:0 8px 0 14px}
+  #boxEmbed .be-dots{display:none}
+  #boxEmbed .be-title{font-size:13px}
+  #boxEmbed .be-btn{padding:0 10px;font-size:12px}
+  #boxEmbed .be-load{inset:48px 0 0 0}
+}
 </style>
 </head>
 <body>
 
+<div id="stage">
+
 <!-- 启动屏：iOS 锁屏风，点「开始使用」或上滑进入总览 -->
-<div class="cover" id="cover" role="dialog" aria-label="欢迎页">
+<div class="cover screen" id="cover" role="dialog" aria-label="欢迎页">
   <div class="cover-center">
     <div class="cover-title">Whimsical-Cookie-House</div>
     <div class="cover-cn">奇想曲奇屋</div>
     <p class="cover-sub">自己写的一些页面和数据，搁这儿。</p>
     <div class="cover-meta">
       <span class="cover-author">Orangeting-here</span>
-      <span class="cover-date">最近更新 2026-11-18</span>
+      <span class="cover-date">最近更新 2026-11-28</span>
     </div>
   </div>
   <div class="cover-bottom">
@@ -400,6 +547,34 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
   </div>
 </div>
 
+<!-- 第二屏：榛仁白巧点心盒 车架 -->
+<section class="showcase screen" id="showcase">
+  <div class="box-ico" aria-hidden="true">🍫</div>
+  <h2 class="box-name">榛仁白巧点心盒</h2>
+  <p class="box-sub">格式互转 · 文字提取 · 教务日历 · 题库，30 个工具装一盒。单个 HTML 离线可用，双击就开，免安装，数据不出本机。</p>
+  <div class="box-chips">
+    <span class="box-chip">离线可用</span>
+    <span class="box-chip">单文件</span>
+    <span class="box-chip">免安装</span>
+    <span class="box-chip">双击即用</span>
+  </div>
+  <div class="cat-grid" id="boxCats"></div>
+  <div class="cat-detail" id="boxCatDetail" hidden>
+    <button class="cat-back" id="boxCatBack" type="button">← 返回点心盒</button>
+    <h3 class="cat-detail-name" id="boxCatName"></h3>
+    <div class="cat-items" id="boxCatItems"></div>
+  </div>
+  <div class="box-cta-wrap">
+    <a class="box-cta" href="https://orangeting-here.github.io/Whimsical-Cookie-House/%E6%A6%9B%E4%BB%81%E7%99%BD%E5%B7%A7%E7%82%B9%E5%BF%83%E7%9B%92/index.html" onclick="return openBox()">开始使用</a>
+    <a class="box-open" href="https://orangeting-here.github.io/Whimsical-Cookie-House/%E6%A6%9B%E4%BB%81%E7%99%BD%E5%B7%A7%E7%82%B9%E5%BF%83%E7%9B%92/index.html" target="_blank" rel="noopener">新窗口打开</a>
+  </div>
+  <div class="box-down">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>
+    不打开？继续下滑，看看其他开源项目
+  </div>
+</section>
+
+<section class="wall-sec screen" id="wallSec">
 <header>
   <div class="head-in">
     <div class="title-block">
@@ -445,9 +620,11 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
   <span id="footStat">—</span>
   <span class="foot-meta">
     <span class="foot-author">Orangeting-here</span>
-    <span class="foot-date">最近更新 2026-11-18</span>
+    <span class="foot-date">最近更新 2026-11-28</span>
   </span>
 </footer>
+</section>
+</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -462,6 +639,48 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
   </div>
 </div>
 
+<!-- 内置内嵌壳：不依赖外部 embed.js，单文件预览里也能把点心盒嵌进页面 -->
+<div id="boxEmbed" hidden aria-hidden="true">
+  <div class="be-shell" role="dialog" aria-modal="true" aria-label="榛仁白巧点心盒">
+    <div class="be-bar">
+      <span class="be-dots" aria-hidden="true">
+        <span class="be-dot r"></span><span class="be-dot y"></span><span class="be-dot g"></span>
+      </span>
+      <span class="be-title" id="beTitle">🍫 榛仁白巧点心盒</span>
+      <button class="be-btn" id="beOpenNew" type="button">↗ 新窗口</button>
+      <button class="be-btn close" id="beClose" type="button" aria-label="关闭">✕</button>
+    </div>
+    <iframe id="beFrame" title="榛仁白巧点心盒" allow="clipboard-write; fullscreen"></iframe>
+    <div class="be-load" id="beLoad">
+      <div class="be-spin" aria-hidden="true"></div>
+      <div>点心盒正在拆盒…</div>
+      <div class="be-slow" id="beSlow" hidden>有点慢？点心盒本体较大，首次加载需要几秒。<br>也可能是网络访问 GitHub 不顺，可以直接点右上角「新窗口」。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   点心盒位置配置 —— 全页唯一要改的地方。
+   点心盒搬到分支/新文件夹后，只改下面 BOX_FOLDER 这一行：
+   例：window.BOX_FOLDER = '某个分支文件夹/榛仁白巧点心盒';
+   内嵌壳、线上回落地址都会自动跟着变，其他都不用动。
+   ═══════════════════════════════════════════════════════ */
+window.BOX_FOLDER = '榛仁白巧点心盒';
+(function(){
+  var s = document.createElement('script');
+  s.src = window.BOX_FOLDER + '/embed/embed.js';
+  s.async = true;
+  document.head.appendChild(s);
+  /* 「开始使用」「新窗口」的地址都跟着配置走 */
+  var base = 'https://orangeting-here.github.io/Whimsical-Cookie-House/' + encodeURI(window.BOX_FOLDER + '/index.html');
+  window.BOX_URL = base;
+  var cta = document.querySelector('.box-cta');
+  if (cta) cta.href = base;
+  var openNew = document.querySelector('.box-open');
+  if (openNew) openNew.href = base;
+})();
+</script>
 <script>
 /* ============================================================
    Whimsical-Cookie-House · 交互
@@ -486,6 +705,7 @@ html[data-theme="dark"] .chip[aria-pressed="true"]{color:#000;background:#fff}
 const APPS = [
   {
     id:'notes',
+    cat:'备忘',
     name:'随手贴',
     desc:'想到的事先贴一张，做完划掉。网页版和安卓版同一个仓库，用哪个拿哪个。',
     kind:'html',
@@ -502,6 +722,7 @@ const APPS = [
   },
   {
     id:'wordfreq',
+    cat:'工具',
     name:'词频分析器',
     desc:'粘一段文字，看哪些词冒得最多。离线也能跑。',
     kind:'html',
@@ -514,6 +735,7 @@ const APPS = [
   },
   {
     id:'reader',
+    cat:'阅读',
     name:'本地小说阅读器',
     desc:'打开本地的 txt、docx，慢慢看。',
     kind:'html',
@@ -526,6 +748,7 @@ const APPS = [
   },
   {
     id:'taglib',
+    cat:'模组',
     name:'共享分页整理库（Tagged Library）',
     desc:'用染料颜色把箱子归入不同的库，同色箱子共用一个自动整理、可分页的共享库存；服务端专用，客户端无需安装。',
     kind:'jar',
@@ -538,6 +761,7 @@ const APPS = [
   },
   {
     id:'spring',
+    cat:'模组',
     name:'弹簧发射台（Spring Module）',
     desc:'两种弹簧发射台：冰霜保持动量、粘土自行减速；红石充能，弹簧锚栓绳与矿车牵引，以及矿车弹射。',
     kind:'jar',
@@ -549,21 +773,19 @@ const APPS = [
     fileName:'springmodule-1.0.0.jar.zip'
   },
   {
-    /* 待上传：文件传到仓库后，把下面目录名与文件名对齐实际即可。
-       模板：目录/最新版-目录名.html；安装包沿用目录内文件名。 */
     id:'archive',
-    name:'档案库',
-    desc:'自己的档案库：先看预览，再挑电脑版还是手机版。',
+    cat:'档案',
+    name:'私人档案馆',
+    desc:'完全离线的个人履历档案库：奖状、证书、学分、实习、讲座都收进来，卡片 / 表格 / 年轮三种看法，可导出 Excel 与简历。',
     kind:'html',
     color:'pink',
-    tags:['档案','预览','电脑版','手机版'],
-    size:'125 MB / 14 MB',
-    date:'2026-11-15',
-    path:'个人档案库/最新版-个人档案库.html',
-    fileName:'最新版-个人档案库.html',
+    tags:['离线','履历','加密备份','电脑版','手机版'],
+    size:'1.7 MB',
+    date:'2026-11-28',
+    path:'私人档案馆/最新版-私人档案库.html',
+    fileName:'最新版-私人档案库.html',
     links:[
-      { t:'电脑版', path:'个人档案库/我的档案库-Windows.zip', fileName:'我的档案库-Windows.zip' },
-      { t:'手机版', path:'个人档案库/我的档案库-安卓.apk', fileName:'我的档案库-安卓.apk' }
+      { t:'电脑版 · 安卓', path:'https://github.com/Orangeting-here/Whimsical-Cookie-House/releases/latest', direct:true }
     ]
   }
 ];
@@ -572,7 +794,7 @@ const APPS = [
 const SITE = 'https://orangeting-here.github.io/Whimsical-Cookie-House/';
 const RAW  = 'https://raw.githubusercontent.com/Orangeting-here/Whimsical-Cookie-House/main/';
 
-function joinUrl(base, p){ return encodeURI(base + p); }
+function joinUrl(base, p){ if (p && /^https?:\/\//i.test(p)) return p; return encodeURI(base + p); }
 APPS.forEach(function(a){
   /* 可选字段兜底：新增条目漏填也不会报错 */
   a.kind = a.kind || 'other';
@@ -598,7 +820,7 @@ function colorOf(app, index){
   if (app.color && COLOR_VAR[app.color]) return COLOR_VAR[app.color];
   return COLOR_VAR[COLOR_POOL[index % COLOR_POOL.length]];
 }
-const state = { q:'', kind:'all', view:'home', current:null };
+const state = { q:'', cat:'all', view:'home', current:null };
 
 const gridEl   = document.getElementById('grid');
 const chipsEl  = document.getElementById('chips');
@@ -613,36 +835,35 @@ const detailHero = document.getElementById('detailHero');
 const detailPreview = document.getElementById('detailPreview');
 const coverEl = document.getElementById('cover');
 
-/* ---------- 滚动锁定 ---------- */
-function lockScroll(){ document.body.style.overflow = 'hidden'; }
-function unlockScroll(){ document.body.style.overflow = ''; }
+const stageEl    = document.getElementById('stage');
+const showcaseEl = document.getElementById('showcase');
+const wallSecEl  = document.getElementById('wallSec');
 
-/* ---------- 启动屏：进入 ---------- */
+/* ---------- 滚动锁定（舞台是唯一滚动容器） ---------- */
+function lockScroll(){ stageEl.style.overflow = 'hidden'; }
+function unlockScroll(){ stageEl.style.overflow = ''; }
+
+/* ---------- 启动屏：进入（封面是第一屏，滚动由舞台接管） ---------- */
 (function initCover(){
   let entered = false;
-  function enter(){
+  function markEntered(){
     if (entered) return;
     entered = true;
-    coverEl.classList.add('leave');
-    setTimeout(function(){ coverEl.hidden = true; }, 500);
-    unlockScroll();
+    try { sessionStorage.setItem('portal-entered', '1'); } catch(e){}
   }
-  document.getElementById('coverEnter').addEventListener('click', enter);
-
-  /* 上滑 / 向上拖动进入（手机与触屏） */
-  let startY = null;
-  coverEl.addEventListener('touchstart', function(e){ startY = e.touches[0].clientY; }, { passive:true });
-  coverEl.addEventListener('touchend', function(e){
-    if (startY === null) return;
-    const dy = startY - e.changedTouches[0].clientY;
-    if (dy > 40) enter();
-    startY = null;
+  /* 点「开始使用」→ 平滑落到第二屏车架 */
+  document.getElementById('coverEnter').addEventListener('click', function(){
+    markEntered();
+    stageEl.scrollTo({ top: showcaseEl.offsetTop, behavior: 'smooth' });
+  });
+  /* 直接下滑过封面也算进入，下次访问不再挡第一屏 */
+  stageEl.addEventListener('scroll', function(){
+    if (!entered && stageEl.scrollTop > coverEl.offsetHeight * 0.5) markEntered();
   }, { passive:true });
-  /* 鼠标滚轮向上也可进入（桌面端兜底） */
-  window.addEventListener('wheel', function(e){ if (!entered && e.deltaY < -20) enter(); }, { passive:true });
-
-  /* 进入前锁住背景滚动 */
-  lockScroll();
+  /* 本次会话已进入过：跳过封面，直接落在第二屏 */
+  let skip = false;
+  try { skip = sessionStorage.getItem('portal-entered') === '1'; } catch(e){}
+  if (skip) coverEl.hidden = true;
 })();
 
 /* ---------- 主题 ---------- */
@@ -723,6 +944,160 @@ function bytesToText(bytes){
   return s;
 }
 
+/* ---------- 第二屏：功能分类卡与详情 ---------- */
+const BOX_CATS = [
+  { id:'cal', icon:'🗓️', name:'日历备忘',
+    desc:'教务日历、查房记录、入院出院、待办清单与随手贴，一天的事都在这。',
+    items:[
+      ['教务日历 · 查房','查房记录、病历病程提醒、入院出院管理'],
+      ['待办清单','水球完成度展示，按紧迫度变色提醒'],
+      ['随手贴便签','想到就贴，做完划掉']
+    ]},
+  { id:'conv', icon:'🔀', name:'转换工具',
+    desc:'图片、PDF、文档、表格、Markdown、PPT，选类型一键直达格式转换。',
+    items:[
+      ['转换工作台','先选文件类型，直接列出这一类能转成什么'],
+      ['图片转换','JPG / PNG / WebP 互转与压缩、合并拆分'],
+      ['PDF 全套','互转、阅读、生成、文字提取、加解密'],
+      ['文档 · 表格','Word / Excel / Markdown 互转'],
+      ['PPT 提取','ppt/media 原图提取、每页转图、讲义排版']
+    ]},
+  { id:'ocr', icon:'👁️', name:'文字提取',
+    desc:'OCR 图片转文字与 PDF 文字提取，中英双语、离线识别。',
+    items:[
+      ['OCR 图片转文字','中英双语离线识别，图片不上传，结果可复制导出'],
+      ['PDF 文字提取','直接抽取正文文字，不用翻页截图']
+    ]},
+  { id:'qbank', icon:'📚', name:'题库学习',
+    desc:'题库分割、抽题、错题集与判分，备考一套带走。',
+    items:[
+      ['题库分割','qbsplit 整卷切成单选题，自动识别选项与答案'],
+      ['抽题 · 错题集','随机抽题练习、错题收集、判分统计']
+    ]},
+  { id:'media', icon:'📖', name:'阅读影音',
+    desc:'本地小说阅读、音乐与视频播放，支持抽帧与 8 档倍速。',
+    items:[
+      ['本地阅读器','txt / docx / epub 离线阅读'],
+      ['音乐播放器','本地音频播放'],
+      ['视频播放器','本地视频、画面抽帧、8 档倍速']
+    ]},
+  { id:'kit', icon:'🧰', name:'实用小件',
+    desc:'时间计算、多计时器、NCM 解密、文件池与加密备份。',
+    items:[
+      ['时间计算','大日期计算 + 小时间计算'],
+      ['多计时器','最多 9 个计时器同时运行'],
+      ['NCM 解密','音乐缓存转 mp3 / flac'],
+      ['文件池','导入、预览、导出统一托管'],
+      ['备份加密','本机 AES 加密快照，数据不出设备']
+    ]}
+];
+(function renderBoxCats(){
+  const grid = document.getElementById('boxCats');
+  BOX_CATS.forEach(function(c){
+    const el = document.createElement('article');
+    el.className = 'cat-card';
+    el.innerHTML =
+      '<div class="cat-top"><span class="cat-ico">' + c.icon + '</span><span class="cat-name">' + esc(c.name) + '</span></div>' +
+      '<p class="cat-desc">' + esc(c.desc) + '</p>' +
+      '<button class="cat-btn" type="button">查看详情</button>';
+    el.addEventListener('click', function(){ openBoxCat(c.id); });
+    grid.appendChild(el);
+  });
+})();
+function openBoxCat(id){
+  let c = null;
+  for (let i = 0; i < BOX_CATS.length; i++){ if (BOX_CATS[i].id === id){ c = BOX_CATS[i]; break; } }
+  if (!c) return;
+  document.getElementById('boxCats').hidden = true;
+  document.querySelector('.box-cta-wrap').hidden = true;
+  document.querySelector('.box-down').hidden = true;
+  document.getElementById('boxCatName').textContent = c.icon + ' ' + c.name;
+  const items = document.getElementById('boxCatItems');
+  items.innerHTML = '';
+  c.items.forEach(function(it){
+    const d = document.createElement('div');
+    d.className = 'cat-item';
+    d.innerHTML = '<b>' + esc(it[0]) + '</b><span>' + esc(it[1]) + '</span>';
+    items.appendChild(d);
+  });
+  document.getElementById('boxCatDetail').hidden = false;
+  stageEl.scrollTo({ top: showcaseEl.offsetTop, behavior: 'smooth' });
+}
+function closeBoxCat(){
+  document.getElementById('boxCatDetail').hidden = true;
+  document.getElementById('boxCats').hidden = false;
+  document.querySelector('.box-cta-wrap').hidden = false;
+  document.querySelector('.box-down').hidden = false;
+  stageEl.scrollTo({ top: showcaseEl.offsetTop, behavior: 'smooth' });
+}
+document.getElementById('boxCatBack').addEventListener('click', closeBoxCat);
+
+/* ---------- 第二屏车架：打开点心盒 ----------
+   三级策略，前一级失败才退下一级：
+   ① 外部 embed.js（整仓部署时同源，最稳）
+   ② 内置内嵌壳（单文件预览、外部脚本取不到时兜底，直接 iframe 加载线上地址）
+   ③ 新标签 / 同页跳转（最后兜底）
+   路径由顶部 BOX_FOLDER 统一控制，这里不用改。 */
+const BOX_INDEX_PATH = window.BOX_FOLDER + '/index.html';
+const BOX_ONLINE = 'https://orangeting-here.github.io/Whimsical-Cookie-House/' + encodeURI(BOX_INDEX_PATH);
+
+/* 内置内嵌壳 */
+const beEl = document.getElementById('boxEmbed');
+const beFrame = document.getElementById('beFrame');
+const beLoad = document.getElementById('beLoad');
+const beSlow = document.getElementById('beSlow');
+let beTimer = null, beLoaded = false;
+
+function embedOpen(url, title){
+  beLoaded = false;
+  beLoad.classList.remove('hide');
+  beSlow.hidden = true;
+  document.getElementById('beTitle').textContent = '🍫 ' + (title || '榛仁白巧点心盒');
+  document.getElementById('beOpenNew').onclick = function(){ window.open(url, '_blank', 'noopener'); };
+  beEl.hidden = false;
+  lockScroll();
+  /* 淡入下一帧加 on，保证过渡生效 */
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ beEl.classList.add('on'); }); });
+  beFrame.src = url;
+  beFrame.onload = function(){
+    beLoaded = true;
+    beLoad.classList.add('hide');
+    clearTimeout(beTimer);
+  };
+  /* 8 秒还没 load 完，给个「有点慢」的提示（不算失败，继续等） */
+  clearTimeout(beTimer);
+  beTimer = setTimeout(function(){ if (!beLoaded) beSlow.hidden = false; }, 8000);
+}
+function embedClose(){
+  if (beEl.hidden) return;
+  beEl.classList.remove('on');
+  clearTimeout(beTimer);
+  unlockScroll();
+  setTimeout(function(){
+    beEl.hidden = true;
+    beFrame.src = 'about:blank';
+    beLoad.classList.remove('hide');
+  }, 280);
+}
+document.getElementById('beClose').addEventListener('click', embedClose);
+beEl.addEventListener('click', function(e){ if (e.target === beEl) embedClose(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') embedClose(); });
+
+function openBox(){
+  /* ① 外部 embed.js 可用（整仓部署、同源） */
+  if (window.WhimsicalMount && typeof WhimsicalMount.open === 'function'){
+    try { WhimsicalMount.open(BOX_INDEX_PATH, '榛仁白巧点心盒'); return false; } catch(e){}
+  }
+  /* ② 内置壳：不依赖外部文件，单文件预览也能嵌 */
+  try { embedOpen(BOX_ONLINE, '榛仁白巧点心盒'); return false; } catch(e){}
+  /* ③ 兜底：新标签，再不行交给链接 href */
+  try {
+    const w = window.open(BOX_ONLINE, '_blank');
+    if (w) { try { w.opener = null; } catch(e){} return false; }
+  } catch(e){}
+  return true;
+}
+
 /* ---------- 打开 / 下载 ---------- */
 function openApp(app){
   if (app.href) {
@@ -784,7 +1159,7 @@ function match(a, q){
   return (a.name + ' ' + a.desc + ' ' + (a.tags || []).join(' ') + ' ' + (a.fileName || '')).toLowerCase().indexOf(q) > -1;
 }
 function appVisible(a){
-  if (state.kind !== 'all' && a.kind !== state.kind) return false;
+  if (state.cat !== 'all' && (a.cat || '其他') !== state.cat) return false;
   return match(a, state.q.trim().toLowerCase());
 }
 
@@ -872,7 +1247,8 @@ function buildCard(app){
       '</div>' +
     '</div>' +
     '<p class="card-desc">' + esc(app.desc) + '</p>' +
-    '<div class="meta"><div class="tags">' + tags + '</div>' + metaBits.join('') + '</div>';
+    '<div class="meta"><div class="tags">' + tags + '</div>' + metaBits.join('') + '</div>' +
+    '<div class="card-act"><button class="card-detail-btn" type="button">查看详情</button></div>';
 
   card.addEventListener('click', function(){ openDetail(app); });
   return card;
@@ -885,7 +1261,7 @@ function openDetail(app){
   renderDetail(app);
   homeView.hidden = true;
   detailView.hidden = false;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  stageEl.scrollTo({ top: wallSecEl.offsetTop, behavior: 'smooth' });
 }
 function backHome(){
   state.view = 'home';
@@ -893,7 +1269,7 @@ function backHome(){
   detailView.hidden = true;
   homeView.hidden = false;
   clearDetailPreview();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  stageEl.scrollTo({ top: wallSecEl.offsetTop, behavior: 'smooth' });
 }
 document.getElementById('backBtn').addEventListener('click', backHome);
 
@@ -943,7 +1319,9 @@ function bindDetailActions(app){
   Array.prototype.forEach.call(detailHero.querySelectorAll('[data-link]'), function(btn){
     btn.addEventListener('click', function(){
       const l = (app.links || [])[Number(btn.getAttribute('data-link'))];
-      if (l) downloadFile(l);
+      if (!l) return;
+      if (l.direct) { openExternal(l.href || l.rawUrl); return; }
+      downloadFile(l);
     });
   });
 }
@@ -985,17 +1363,17 @@ APPS.forEach(function(app){
   gridEl.appendChild(c);
 });
 
-/* 筛选分类：全部 + 配置里实际出现过的类型，新类型自动出现 */
+/* 筛选分类：全部 + 配置里实际出现过的用途分类，新分类自动出现 */
 const chipDefs = [['all', '全部']].concat(
-  [...new Set(APPS.map(function(a){ return a.kind; }))]
-    .map(function(k){ return [k, KIND_LABEL[k] || k]; })
+  [...new Set(APPS.map(function(a){ return a.cat || '其他'; }))]
+    .map(function(k){ return [k, k]; })
 );
 const chipMap = {};
 chipDefs.forEach(function(d){
   const b = document.createElement('button');
   b.type = 'button'; b.className = 'chip';
   b.innerHTML = d[1] + '<span class="n">0</span>';
-  b.addEventListener('click', function(){ state.kind = d[0]; applyView(); });
+  b.addEventListener('click', function(){ state.cat = d[0]; applyView(); });
   chipMap[d[0]] = b;
   chipsEl.appendChild(b);
 });
@@ -1003,7 +1381,7 @@ chipDefs.forEach(function(d){
 function countsFor(q){
   const base = APPS.filter(function(a){ return match(a, q); });
   const c = { all: base.length };
-  base.forEach(function(a){ c[a.kind] = (c[a.kind] || 0) + 1; });
+  base.forEach(function(a){ c[a.cat || '其他'] = (c[a.cat || '其他'] || 0) + 1; });
   return c;
 }
 function applyView(){
@@ -1018,7 +1396,7 @@ function applyView(){
   const c = countsFor(state.q.trim().toLowerCase());
   Object.keys(chipMap).forEach(function(k){
     const b = chipMap[k];
-    b.setAttribute('aria-pressed', state.kind === k ? 'true' : 'false');
+    b.setAttribute('aria-pressed', state.cat === k ? 'true' : 'false');
     b.querySelector('.n').textContent = c[k] || 0;
     b.style.display = (k !== 'all' && !c[k]) ? 'none' : '';
   });
@@ -1041,5 +1419,6 @@ document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !app
 
 applyView();
 </script>
+
 </body>
 </html>
